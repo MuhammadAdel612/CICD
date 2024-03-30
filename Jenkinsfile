@@ -1,36 +1,15 @@
-pipeline { 
-    environment { 
-        registry = "muhammadadel8/mygx" 
-        registryCredential = 'dockerhub_id' 
-        dockerImage = '' 
-    }
-    agent any 
-    stages { 
-        stage('Cloning our Git') { 
-            steps { 
-                git 'https://github.com/MuhammadAdel612/CICD.git' 
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'docker build . -t node-todo-app'
             }
-        } 
-        stage('Building our image') { 
-            steps { 
-                script { 
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
-                }
-            } 
         }
-        stage('Deploy our image') { 
-            steps { 
-                script { 
-                    docker.withRegistry( '', registryCredential ) { 
-                        dockerImage.push() 
-                    }
-                } 
+        stage('Run') {
+            steps {
+                sh 'docker run -d -p 8000:8000 --name node-todo-app node-todo-app'
             }
-        } 
-        stage('Cleaning up') { 
-            steps { 
-                sh "docker rmi $registry:$BUILD_NUMBER" 
-            }
-        } 
+        }
     }
 }
