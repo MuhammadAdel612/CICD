@@ -1,21 +1,36 @@
-pipeline {
-    agent any
-    stages {
-        stage('Back-end') {
-            agent {
-                docker { image 'maven:3.9.6-eclipse-temurin-17-alpine' }
+pipeline { 
+    environment { 
+        registry = "YourDockerhubAccount/YourRepository" 
+        registryCredential = 'dockerhub_id' 
+        dockerImage = '' 
+    }
+    agent any 
+    stages { 
+        stage('Cloning our Git') { 
+            steps { 
+                git 'https://github.com/YourGithubAccount/YourGithubRepository.git' 
             }
-            steps {
-                sh 'mvn --version'
-            }
+        } 
+        stage('Building our image') { 
+            steps { 
+                script { 
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
+                }
+            } 
         }
-        stage('Front-end') {
-            agent {
-                docker { image 'node:20.11.1-alpine3.19' }
+        stage('Deploy our image') { 
+            steps { 
+                script { 
+                    docker.withRegistry( '', registryCredential ) { 
+                        dockerImage.push() 
+                    }
+                } 
             }
-            steps {
-                sh 'node --version'
+        } 
+        stage('Cleaning up') { 
+            steps { 
+                sh "docker rmi $registry:$BUILD_NUMBER" 
             }
-        }
+        } 
     }
 }
