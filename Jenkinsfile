@@ -13,13 +13,17 @@ pipeline {
         }
         stage('Run') {
             steps {
-                sh 'docker run -d -p 8000:80 --name web-server nginx-alpine'
+                sh 'docker run -d -p 8000:80 --name muhammadadel8/nginx-alpine:latest'
             }
             }
         stage('PUSH'){
             steps {
-               sh 'docker push muhammadadel8/nginx-alpine:latest'
-            }
+               script {
+                docker.withRegistry( '', registryCredential ) {
+                dockerImage.push()
+}
         }
 }
+}
+    }
 }
