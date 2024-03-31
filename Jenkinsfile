@@ -8,7 +8,6 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'docker rmi nginx-alpine:latest'
                 sh 'docker build . -t muhammadadel8/nginx-alpine:latest'
             }
         }
