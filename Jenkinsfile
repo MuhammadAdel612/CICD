@@ -1,9 +1,4 @@
 pipeline {
-    environment { 
-      registry = "docker.io/muhammadadel8"
-      registryCredential = 'dockerhub_id'
-      }
-    
     agent any
     stages {
         stage('Build') {
@@ -18,12 +13,9 @@ pipeline {
             }
         stage('PUSH'){
             steps {
-               script {
-                docker.withRegistry( '', registryCredential ) {
-                dockerImage.push()
-}
+               sh 'docker login -u muhammadadel8 -p M07@mm@d!123'
+                sh 'docker push muhammadadel8/nginx-alpine:latest'
         }
 }
 }
     }
-}
