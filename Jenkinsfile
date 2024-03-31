@@ -1,21 +1,36 @@
 pipeline {
-    agent any
-    stages {
-        stage('Build') {
-            steps {
-                sh 'docker build . -t muhammadadel8/nginx-alpine:latest'
-            }
-        }
-        stage('Run') {
-            steps {
-                sh 'docker run -d -p 8000:80 --name web-server muhammadadel8/nginx-alpine:latest'
-            }
-            }
-        stage('PUSH'){
-            steps {
-               sh 'docker login -u muhammadadel8 -p M07@mm@d!123'
-                sh 'docker push muhammadadel8/nginx-alpine:latest'
-        }
-}
-}
+  environment {
+    registry = "muhammadadel8/nginx-alpine"
+    registryCredential = 'dockerhub_id'
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git 'https://github.com/MuhammadAdel612/CICD.git'
+      }
     }
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
+      }
+    }
+  }
+}
