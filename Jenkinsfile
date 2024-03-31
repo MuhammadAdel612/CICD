@@ -12,9 +12,11 @@ pipeline {
                 sh 'docker run -d -p 8000:80 --name web-server nginx-alpine'
             }
         stage('PUSH'){
+            steps {
                 sh 'docker tag nginx-alpine:latest muhammadadel8/nginx-alpine:latest'
                 sh 'docker push muhammadadel8/nginx-alpine:latest'
         }
     }
+}
 }
 }
