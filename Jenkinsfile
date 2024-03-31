@@ -3,12 +3,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'docker build . -t node-todo-app'
+                sh 'docker build . -t nginx-alpine'
             }
         }
         stage('Run') {
             steps {
-                sh 'docker run -d -p 8000:8000 --name node-todo-app node-todo-app'
+                sh 'docker run -d -p 8000:80 --name web-server nginx-alpine'
             }
         }
     }
