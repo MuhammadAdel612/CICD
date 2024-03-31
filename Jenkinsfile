@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/MuhammadAdel612/CICD.git'
+        git([url: 'https://github.com/MuhammadAdel612/CICD.git', branch: 'main'])
       }
     }
     stage('Building image') {
