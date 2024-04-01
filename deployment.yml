@@ -36,7 +36,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: __registry__:__BUILD_NUMBER__ 
+      - image: muhammadadel8/newnginx:$BUILD_NUMBER
      # muhammadadel8/newnginx:29
         name: test-image
         ports:
