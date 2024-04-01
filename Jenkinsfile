@@ -27,6 +27,15 @@ pipeline {
         }
       }
     }
+    stage('Deploy to K8s') {
+      steps{
+        script {
+          sh "cat deployment.yaml"
+          sh "kubectl --kubeconfig=/root/kubeconfig get pods"
+          sh "kubectl --kubeconfig=/root/kubeconfig apply -f deployment.yaml"
+        }
+      }
+    }
     stage('Remove Unused docker image') {
       steps{
         sh "docker rmi $registry:$BUILD_NUMBER"
