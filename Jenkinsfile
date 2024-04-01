@@ -32,7 +32,7 @@ pipeline {
         script {
           sh "cat deployment.yml"
           sh "kubectl --kubeconfig=/kubeconfig get pods"
-          sh "kubectl --kubeconfig=/kubeconfig apply -f deployment.yaml"
+          sh "kubectl --kubeconfig=/kubeconfig apply -f deployment.yml"
         }
       }
     }
