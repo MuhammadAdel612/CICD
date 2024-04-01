@@ -30,7 +30,7 @@ pipeline {
     stage('Deploy to K8s') {
       steps{
         script {
-          sh "cat deployment.yaml"
+          sh "cat deployment.yml"
           sh "kubectl --kubeconfig=/root/kubeconfig get pods"
           sh "kubectl --kubeconfig=/root/kubeconfig apply -f deployment.yaml"
         }
