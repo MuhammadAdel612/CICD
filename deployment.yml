@@ -9,9 +9,6 @@ spec:
   - name: http
     port: 80
     targetPort: 8080
-  - name: https
-    port: 8080
-    targetPort: 80
   selector:
     app: test-image
     tier: frontend
@@ -42,5 +39,3 @@ spec:
         ports:
         - containerPort: 80
           name: http
-        - containerPort: 443
-          name: https
