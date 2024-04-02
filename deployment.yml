@@ -40,7 +40,7 @@ spec:
      # muhammadadel8/newnginx:29
         name: test-image
         ports:
-        - containerPort: 8080
+        - containerPort: 80
           name: http
         - containerPort: 80
           name: httpa
